@@ -8,6 +8,7 @@ import { ProductGrid } from '@/components/products/ProductGrid';
 import { SortByDropdown } from '@/components/products/SortByDropdown';
 import { Pagination } from '@/components/products/Pagination';
 import { ProductGridSkeleton } from '@/components/products/ProductGridSkeleton';
+import Link from 'next/link'; // Added import
 
 const PAGE_SIZE = 9;
 
@@ -77,11 +78,19 @@ export default function ShopPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-gray-800">Shop</h1>
-          <div className="text-sm text-gray-500">
-            <span>Home</span> / <span>Shop</span>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-2 sm:mb-0">Shop All Products</h1>
+          <nav className="text-sm font-medium text-gray-600">
+            <ol className="list-none p-0 inline-flex">
+              <li className="flex items-center">
+                <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+                <span className="mx-2 text-gray-400">/</span>
+              </li>
+              <li className="flex items-center">
+                <span className="text-gray-800">Shop</span>
+              </li>
+            </ol>
+          </nav>
         </div>
       </header>
 
@@ -89,9 +98,10 @@ export default function ShopPage() {
         <FilterControls filterData={filterData} onFilterChange={handleFilterChange} />
 
         <main className="w-full">
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-sm text-gray-600">
-              {!isLoading && `Showing ${products.length} of ${totalProducts} products`}
+          <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+            <p className="text-base text-gray-700 font-medium">
+              {!isLoading && totalProducts > 0 && `Showing ${products.length} of ${totalProducts} products`}
+              {!isLoading && totalProducts === 0 && `No products found`}
             </p>
             <SortByDropdown sortBy={filters.sortBy} setSortBy={handleSortChange} />
           </div>
@@ -101,9 +111,10 @@ export default function ShopPage() {
           ) : products.length > 0 ? (
             <ProductGrid products={products} />
           ) : (
-            <div className="text-center col-span-full py-12">
-              <h2 className="text-2xl font-semibold text-gray-700 mb-2">No Products Found</h2>
-              <p className="text-gray-500">Try adjusting your filters to find what you&apos;re looking for.</p>
+            <div className="text-center col-span-full py-20 bg-gray-50 rounded-lg shadow-sm">
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">No Products Found</h2>
+              <p className="text-lg text-gray-600">We couldn&apos;t find any products matching your criteria.</p>
+              <p className="text-md text-gray-500 mt-2">Try adjusting your filters or browse other categories.</p>
             </div>
           )}
 

@@ -22,12 +22,12 @@ export function Pagination({ currentPage, totalProducts, pageSize, onPageChange 
 
   return (
     <nav className="flex items-center justify-center mt-8">
-      <ul className="flex items-center -space-x-px h-8 text-sm">
+      <ul className="flex flex-wrap items-center gap-2 text-sm">
         <li>
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
+            className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -36,7 +36,7 @@ export function Pagination({ currentPage, totalProducts, pageSize, onPageChange 
           <li key={page}>
             <button
               onClick={() => handlePageChange(page)}
-              className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 ${currentPage === page ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'}`}
+              className={`flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 transition-colors duration-200 ${currentPage === page ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100 hover:text-gray-900'}`}
             >
               {page}
             </button>
@@ -46,7 +46,7 @@ export function Pagination({ currentPage, totalProducts, pageSize, onPageChange 
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
+            className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
           </button>
