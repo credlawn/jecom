@@ -7,6 +7,7 @@ import { FilterControls } from '@/components/products/FilterControls';
 import { ProductGrid } from '@/components/products/ProductGrid';
 import { SortByDropdown } from '@/components/products/SortByDropdown';
 import { Pagination } from '@/components/products/Pagination';
+import { ProductGridSkeleton } from '@/components/products/ProductGridSkeleton';
 
 const PAGE_SIZE = 9;
 
@@ -76,8 +77,12 @@ export default function ShopPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-800">Shop</h1>
-        {/* Breadcrumbs can be added here */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold text-gray-800">Shop</h1>
+          <div className="text-sm text-gray-500">
+            <span>Home</span> / <span>Shop</span>
+          </div>
+        </div>
       </header>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -86,25 +91,32 @@ export default function ShopPage() {
         <main className="w-full">
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm text-gray-600">
-              Showing {products.length} of {totalProducts} products
+              {!isLoading && `Showing ${products.length} of ${totalProducts} products`}
             </p>
             <SortByDropdown sortBy={filters.sortBy} setSortBy={handleSortChange} />
           </div>
 
           {isLoading ? (
-            <div className="text-center">Loading products...</div>
-          ) : (
+            <ProductGridSkeleton />
+          ) : products.length > 0 ? (
             <ProductGrid products={products} />
+          ) : (
+            <div className="text-center col-span-full py-12">
+              <h2 className="text-2xl font-semibold text-gray-700 mb-2">No Products Found</h2>
+              <p className="text-gray-500">Try adjusting your filters to find what you&apos;re looking for.</p>
+            </div>
           )}
 
-          <div className="mt-8">
-            <Pagination 
-              currentPage={currentPage}
-              totalProducts={totalProducts}
-              pageSize={PAGE_SIZE}
-              onPageChange={setCurrentPage}
-            />
-          </div>
+          {!isLoading && products.length > 0 && (
+            <div className="mt-8">
+              <Pagination 
+                currentPage={currentPage}
+                totalProducts={totalProducts}
+                pageSize={PAGE_SIZE}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
         </main>
       </div>
     </div>
