@@ -1,1 +1,14 @@
 .aider*
+# Ignore everything
+*
+
+# Whitelist .gitignore
+!.gitignore
+
+# Whitelist myecom
+!myecom/
+!myecom/**
+
+# Whitelist front
+!front/
+!front/**
