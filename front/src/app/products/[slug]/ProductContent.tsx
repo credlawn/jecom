@@ -94,64 +94,58 @@ export default function ProductContent({
           className="lg:w-1/2 flex flex-col items-start"
           style={{ color: settings.thirdColor || "green" }}
         >
-          <h1 className="text-2xl font-bold text-neutral-900 mb-2">
-            {product.productName}
-          </h1>
+                    <div className="flex flex-col gap-3 border-b border-gray-200 pb-4">
+                      <h1 className="text-2xl font-bold text-neutral-900">
+                        {product.productName}
+                      </h1>
           
-          <div className="flex items-center gap-3 text-sm mt-3 md:mt-4 md:text-base w-full">
-            <StarRating
-              rating={product.productRating}
-              size={20}
-              fullColor="#f87171" // Hardcoded color as requested
-            />
-            <span className="text-gray-600">( {product.ratingCount} Ratings</span>&<span className="text-gray-600">{product.reviewCount} Reviews )</span>
-          </div>
+                                              <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 gap-y-1 sm:gap-x-3">
+                                                <div className="flex items-center gap-2">
+                                                  <StarRating rating={product.productRating} size={18} fullColor="#facc15" />
+                                                  <span>({product.ratingCount} Ratings & {product.reviewCount} Reviews)</span>
+                                                </div>
+                                                {product.unitsSold > 0 && (
+                                                  <>
+                                                    <div className="hidden sm:block w-px h-4 bg-gray-300"></div>
+                                                    <div className="flex items-center">
+                                                      <span className="font-semibold text-green-600">{product.unitsSold}+ Units Sold</span>
+                                                    </div>
+                                                  </>
+                                                )}
+                                              </div>                                  <div>
+                                    <div className="flex items-baseline gap-2">
+                                      <span className="text-2xl font-bold text-gray-800">
+                                        {settings.currency} {Math.round(product.discountedPrice)}
+                                      </span>
+                                      <del className="text-base text-gray-500">
+                                        {settings.currency} {Math.round(product.price)}
+                                      </del>
+                                      <span className="text-base font-bold text-green-600">
+                                        ({discountPercent}% OFF)
+                                      </span>
+                                    </div>
+                                  </div>
+                      
+                                              <div className="flex items-center justify-start gap-4">
+                                                <WishlistButton productId={product.id} />
+                                                <div className="border-l h-4 border-gray-300"></div>
+                                                <Button variant="ghost" className="text-gray-600 hover:text-blue-500 px-0">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1.5 h-4 w-4"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                                  Compare
+                                                </Button>
+                                              </div>                                </div>
+                      
+                                <div className="w-full mt-6">
+                                  <CheckPin />
+                                </div>
           
-          {product.unitsSold > 0 && (
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-green-700 px-0 py-2 mt-3 w-full text-left"
-            >
-              <p className="text-base font-medium flex items-center gap-2">
-                <span className="text-xl">🎊</span> {product.unitsSold}+ Units Sold
-              </p>
-            </motion.div>
-          )}          <div className="w-full mt-0 mb-0">
-            <CheckPin />
-          </div>
-
-          <div className="flex flex-wrap gap-4 mt-6 w-full">
-            <WishlistButton 
-              productId={product.id} 
-            />
-            <Button variant="outline">
-              <span>⇄</span> Add to compare
-            </Button>
-          </div>
-
-          <div className="mt-6 w-full border border-gray-200 rounded-lg bg-white divide-y divide-gray-200">
-            {/* Price Section */}
-            <div className="p-4">
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-3xl font-bold text-gray-900">
-                  {settings.currency} {product.discountedPrice.toFixed(2)}
-                </span>
-                <del className="text-lg text-gray-500">
-                  {settings.currency} {product.price.toFixed(2)}
-                </del>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  -{discountPercent}% OFF
-                </span>
-                <span className="text-sm text-gray-600">per {product.unit}</span>
-              </div>
-            </div>
-
-            {/* Details Section */}
-            <div className="p-4">
+          
+          
+                    <div className="mt-6 w-full border border-gray-200 rounded-lg bg-white divide-y divide-gray-200">
+          
+                      {/* Details Section */}
+          
+                      <div className="p-4">
               <div className="grid grid-cols-3 gap-y-3 text-sm">
                 <span className="text-gray-500 col-span-1">Brand</span>
                 <span className="text-gray-800 font-medium col-span-2">{product.brandName}</span>
@@ -194,7 +188,7 @@ export default function ProductContent({
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-700">Total Price</span>
                 <span className="text-2xl font-bold text-red-600">
-                  {settings.currency} {(product.discountedPrice * quantity).toFixed(2)}
+                  {settings.currency} {Math.round(product.discountedPrice * quantity)}
                 </span>
               </div>
             </div>

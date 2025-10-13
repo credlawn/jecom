@@ -6,6 +6,7 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { addToWishlist, removeFromWishlist, selectWishlistItems } from "@/redux/features/wishlist-slice";
 import { selectSession } from "@/redux/features/session-slice";
 import { Button } from "@/ui/button";
+import { Heart } from "lucide-react";
 
 interface WishlistButtonProps {
   productId: string;
@@ -35,8 +36,9 @@ const WishlistButton: React.FC<WishlistButtonProps> = ({
   };
 
   return (
-    <Button onClick={handleWishlistToggle} variant="outline">
-      {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+    <Button onClick={handleWishlistToggle} variant="ghost" className="text-gray-600 hover:text-red-500 px-0">
+      <Heart className={`mr-1.5 h-4 w-4 transition-all ${isInWishlist ? 'fill-current text-red-500' : ''}`} />
+      Wishlist
     </Button>
   );
 };
