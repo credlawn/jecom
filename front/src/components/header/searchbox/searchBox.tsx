@@ -5,8 +5,8 @@ import { useState, useEffect, forwardRef, useRef, useCallback } from "react";
 import { useDebounce } from "@/redux/useDebounce";
 import { useResetOnNavigation } from "@/redux/useResetOnNavigation";
 import { useAppSelector } from "@/redux/store";
-import Link from "next/link";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 
 interface SearchResult {
   name: string;
@@ -39,6 +39,9 @@ const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
 
     const { currency } = useAppSelector((state) => state.settingsReducer);
 
+    const router = useRouter();
+    const pathname = usePathname();
+
     const debouncedQuery = useDebounce(searchQuery, 300);
     const searchInputRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -48,6 +51,15 @@ const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
       setIsDropdownOpen(false);
     }, []);
     useResetOnNavigation(resetSearch);
+
+    const handleResultClick = (product: SearchResult) => {
+      const productUrl = `/products/${product.productSlug}`;
+      if (pathname === productUrl) {
+        resetSearch();
+      } else {
+        router.push(productUrl);
+      }
+    };
 
   
     const [currentPlaceholder, setCurrentPlaceholder] = useState("");
@@ -159,9 +171,9 @@ const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
                   : 0;
 
                 return (
-                  <Link
+                  <div
                     key={product.name}
-                    href={`/products/${product.productSlug}`}
+                    onClick={() => handleResultClick(product)}
                     className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
                   >
                     <Image
@@ -194,7 +206,7 @@ const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
                         </p>
                       )}
                     </div>
-                  </Link>
+                  </div>
                 );
               })
             ) : (
