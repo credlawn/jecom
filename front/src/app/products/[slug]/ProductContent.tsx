@@ -10,6 +10,7 @@ import WishlistButton from "@/components/wishlist/WishlistButton";
 import CartButton from "@/components/cart/CartButton";
 import { motion } from "framer-motion";
 import { SiteSettings } from "@/types/settings";
+import { Button } from "@/ui/button";
 
 export default function ProductContent({
   product,
@@ -42,7 +43,7 @@ export default function ProductContent({
       initial="hidden"
       animate="visible"
       variants={fadeIn}
-      className="main-container max-w-6xl mx-auto p-4 pb-20 lg:pb-4"
+      className="main-container max-w-7xl mx-auto p-4 pb-20 lg:pb-4"
     >
       {/* Breadcrumb */}
       <div className="breadcrumb-section mb-6 hidden lg:block">
@@ -125,68 +126,78 @@ export default function ProductContent({
             <WishlistButton 
               productId={product.id} 
             />
-            <button className="flex items-center gap-2 hover:text-blue-500 transition-colors duration-200 bg-gray-50 px-4 py-2 rounded-lg text-gray-600">
+            <Button variant="outline">
               <span>⇄</span> Add to compare
-            </button>
+            </Button>
           </div>
 
-          <div className="flex flex-col gap-3 mt-6 w-full bg-gray-50 p-4 rounded-lg">
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500 min-w-20">Brand</span>
-              <span className="font-semibold text-gray-800">{product.brandName}</span>
+          <div className="mt-6 w-full border border-gray-200 rounded-lg bg-white divide-y divide-gray-200">
+            {/* Price Section */}
+            <div className="p-4">
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl font-bold text-gray-900">
+                  {settings.currency} {product.discountedPrice.toFixed(2)}
+                </span>
+                <del className="text-lg text-gray-500">
+                  {settings.currency} {product.price.toFixed(2)}
+                </del>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                  -{discountPercent}% OFF
+                </span>
+                <span className="text-sm text-gray-600">per {product.unit}</span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500 min-w-20">Seller</span>
-              <button className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-green-200 transition-colors duration-200">
-                <span>💬</span> Message Seller
-              </button>
-            </div>
-          </div>
+            {/* Details Section */}
+            <div className="p-4">
+              <div className="grid grid-cols-3 gap-y-3 text-sm">
+                <span className="text-gray-500 col-span-1">Brand</span>
+                <span className="text-gray-800 font-medium col-span-2">{product.brandName}</span>
 
-          <div className="flex items-center gap-3 mt-6 w-full bg-gray-50 p-4 rounded-lg">
-            <span className="text-3xl font-bold text-red-600">
-              {settings.currency} {product.discountedPrice.toFixed(2)}
-            </span>
-            <div className="flex flex-col">
-              <del className="text-gray-500">
-                {settings.currency} {product.price.toFixed(2)} /{product.unit}
-              </del>
-              <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-full w-fit">
-                -{discountPercent}% OFF
-              </span>
+                <span className="text-gray-500 col-span-1">Seller</span>
+                <div className="col-span-2">
+                  <button className="text-blue-600 hover:underline text-sm font-medium flex items-center gap-1.5 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Message Seller
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-4 mt-6 w-full bg-gray-50 p-4 rounded-lg">
-            <span className="text-sm text-gray-700 font-medium min-w-20">Quantity</span>
-            <div className="flex items-center gap-2 border rounded-lg overflow-hidden">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center text-xl"
-              >
-                -
-              </button>
-              <span className="w-10 text-center font-medium">{quantity}</span>
-              <button
-                onClick={() =>
-                  setQuantity(Math.min(product.stock, quantity + 1))
-                }
-                className="w-10 h-10 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center text-xl"
-              >
-                +
-              </button>
+            {/* Quantity & Total */}
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm font-medium text-gray-700">Quantity</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border rounded-md overflow-hidden">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1}
+                      className="w-9 h-9 bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center text-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      -
+                    </button>
+                    <span className="w-12 text-center font-semibold text-sm">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                      disabled={quantity >= product.stock}
+                      className="w-9 h-9 bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center text-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <span className="text-xs text-gray-500">({product.stock} available)</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Total Price</span>
+                <span className="text-2xl font-bold text-red-600">
+                  {settings.currency} {(product.discountedPrice * quantity).toFixed(2)}
+                </span>
+              </div>
             </div>
-            <span className="text-sm text-gray-500 ml-2">
-              ({product.stock} available)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4 mt-6 w-full bg-gray-50 p-4 rounded-lg">
-            <span className="text-sm text-gray-700 font-medium min-w-20">Total Price</span>
-            <span className="text-2xl font-bold text-red-600">
-              {settings.currency} {(product.discountedPrice * quantity).toFixed(2)}
-            </span>
           </div>
           
           {/* Desktop buttons are in ProductGallery.tsx */}

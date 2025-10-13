@@ -152,7 +152,7 @@ export default function CheckPin() {
               </div>
               <button
                 onClick={clearPincode}
-                className="text-base text-blue-600 hover:text-blue-700 font-medium"
+                className="text-base text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
               >
                 Change
               </button>
