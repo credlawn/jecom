@@ -115,7 +115,7 @@ export default function CheckoutPage() {
 
       if (result.status === 'success') {
         const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
-        router.push(`/dummy-payment-gateway?order_id=${result.sales_order_id}&amount=${totalAmount}`);
+        router.push(`/pg/razorpay?order_id=${result.sales_order_id}&amount=${totalAmount}`);
       } else {
         alert(`Error placing order: ${result.message}`);
       }
